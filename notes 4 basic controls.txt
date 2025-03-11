@@ -1,0 +1,446 @@
+======================================================================================================================================
+Basic Controls
+======================================================================================================================================
+
+// the following information is a list of the controls we have used in class so far and some that we are going to come across soon in 
+// future classes. 
+
+--------------------------------------------------------------------------------------------------------------------------------------
+1. EditText
+
+*Explanation:
+
+The EditText is a user interface control that allows users to input and modify text. It is essential for any application where users need to enter data, such as login forms, search bars, or any other data entry fields. It can be customized to accept different types of input, like numbers, passwords, or plain text.
+
+*XML Example:
+
+<EditText
+    android:id="@+id/editText"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Enter text"
+    android:textSize="16sp"
+    android:inputType="textPersonName"
+    android:layout_marginTop="20dp"/>
+
+*Kotlin Code Example:
+In your `Activity.kt` file, you will link the EditText control to a variable using `findViewById`. Then, you can access and manipulate the data entered by the user.
+
+val editText: EditText = findViewById(R.id.editText)
+val userInput: String = editText.text.toString()  // Get the text entered by the user
+editText.setText("Default text")  // Set some default text
+
+*Button Interaction Example:
+If you want to use an `EditText` along with a `Button` to capture input, you can add a `Button` that, when clicked, will display the text entered in the `EditText`.
+
+val submitButton: Button = findViewById(R.id.submitButton)
+submitButton.setOnClickListener {
+    val input = editText.text.toString()
+    // Do something with the input, like showing it in a Toast
+    Toast.makeText(applicationContext, "You entered: $input", Toast.LENGTH_SHORT).show()
+}
+
+*Commonly Used Attributes:
+
+- android:id – Unique identifier for the `EditText` control.
+- android:layout_width – Defines the width of the `EditText`. Common values: `match_parent`, `wrap_content`.
+- android:layout_height – Defines the height of the `EditText`. Common values: `match_parent`, `wrap_content`.
+- android:text – Default text to display.
+- android:hint – Placeholder text that appears when the `EditText` is empty.
+- android:textSize – Defines the size of the text inside the `EditText`.
+- android:inputType – Specifies the type of data expected (e.g., `text`, `number`, `phone`, `email`, `password`).
+- android:lines – Specifies the number of lines for multiline input.
+- android:maxLength – Limits the number of characters that can be entered.
+- android:enabled – Enables or disables the `EditText`.
+- android:editable – Determines whether the user can modify the text.
+
+*Size Values Discussion:
+- match_parent: This means the control will take up the entire width or height of the parent container.
+- wrap_content: This means the control will only be as large as the content it contains (i.e., the text entered in an `EditText`).
+- dp (density-independent pixels): A unit of measurement to ensure UI elements appear consistently across devices with different screen densities.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+2. TextView
+
+*Explanation:
+A TextView is used to display text to the user. Unlike `EditText`, `TextView` does not allow user input but is essential for presenting information. It is widely used for labels, instructions, or any static text in your UI.
+
+*XML Example:
+
+<TextView
+    android:id="@+id/textView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Hello, World!"
+    android:textSize="18sp"
+    android:textColor="000000"
+    android:layout_marginTop="20dp"/>
+
+*Kotlin Code Example:
+To reference and modify the `TextView` in your Kotlin code:
+
+val textView: TextView = findViewById(R.id.textView)
+textView.text = "New Text Displayed"
+
+*Commonly Used Attributes:
+
+- android:id – Unique identifier for the `TextView`.
+- android:layout_width – The width of the `TextView` (typically `wrap_content` to fit the text).
+- android:layout_height – The height of the `TextView` (typically `wrap_content`).
+- android:text – The text displayed in the `TextView`.
+- android:textSize – Size of the text in the `TextView`.
+- android:textColor – Color of the text.
+- android:textStyle – Defines the style of the text (e.g., `bold`, `italic`).
+- android:gravity – Controls the alignment of text (e.g., `center`, `right`, `left`).
+- android:maxLines – Limits the number of lines displayed.
+- android:ellipsize – Controls how to handle text overflow (e.g., `end`, `marquee`).
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+3. Button
+
+*Explanation:
+A Button is a clickable UI element that allows users to trigger an action when pressed. It is one of the most commonly used controls in Android development, used for navigating, submitting forms, or triggering various events.
+
+*XML Example:
+
+<Button
+    android:id="@+id/button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Submit"
+    android:textSize="16sp"
+    android:layout_marginTop="20dp"/>
+
+*Kotlin Code Example:
+To reference and set up an `OnClickListener` for the `Button` in your Kotlin code:
+
+val button: Button = findViewById(R.id.button)
+button.setOnClickListener {
+    // Action to perform when button is clicked
+    Toast.makeText(applicationContext, "Button Clicked", Toast.LENGTH_SHORT).show()
+}
+
+*Commonly Used Attributes:
+
+- android:id – Unique identifier for the `Button`.
+- android:layout_width – The width of the `Button`. Common values: `match_parent`, `wrap_content`.
+- android:layout_height – The height of the `Button`. Common values: `match_parent`, `wrap_content`.
+- android:text – The text displayed on the `Button`.
+- android:textSize – The size of the text on the `Button`.
+- android:textColor – The color of the text on the `Button`.
+- android:background – Custom background drawable for the button.
+- android:enabled – Specifies whether the button is enabled or disabled.
+- android:layout_gravity – Defines the alignment of the button within the parent (e.g., `center`, `bottom`).
+- android:onClick – Used for setting an event handler directly from XML (e.g., `android:onClick="onButtonClick"`).
+
+======================================================================================================================================
+ Discussion of Important Attributes:
+======================================================================================================================================
+
+*InputType for EditText:
+- text: For regular text input.
+- number: For numeric input.
+- phone: For phone numbers.
+- email: For email input.
+- password: For entering passwords (input is obfuscated).
+- datetime: For dates and times.
+
+*Text Size & Colors:
+- android:textSize: Always specify text size in `sp` (scale-independent pixels) rather than `px` for better accessibility.
+- android:textColor: Define text color using color values (e.g., `FF0000` for red, `@color/primary` for referencing resources).
+
+*Layout Options (Match Parent, Wrap Content, dp):
+- match_parent: The view will expand to fill the available space in the parent container.
+- wrap_content: The view will shrink to just fit the content.
+- dp (density-independent pixels): This unit ensures that UI elements appear at the same size across different screen densities.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+Other Controls 
+--------------------------------------------------------------------------------------------------------------------------------------
+
+1. ImageView
+
+*Explanation:*
+
+The `ImageView` is used to display images in an Android application. It can display images from various sources like drawable resources, external files, or URLs. It is essential for any app that needs to show pictures, icons, or illustrations.
+
+*XML Example:
+
+<ImageView
+    android:id="@+id/imageView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/sample_image"
+    android:contentDescription="Image description"
+    android:layout_marginTop="20dp"/>
+
+*Kotlin Code Example:
+In your `Activity.kt` file, you can load the image and manipulate the `ImageView`.
+
+val imageView: ImageView = findViewById(R.id.imageView)
+imageView.setImageResource(R.drawable.sample_image)  // Set image from resources
+
+*Commonly Used Attributes:*
+
+- android:id – Unique identifier for the `ImageView`.
+- android:layout_width – Width of the `ImageView`. Common values: `match_parent`, `wrap_content`.
+- android:layout_height – Height of the `ImageView`. Common values: `match_parent`, `wrap_content`.
+- android:src – The source of the image, either from drawable resources or an external URL.
+- android:contentDescription – A description of the image for accessibility purposes.
+- android:scaleType – Defines how the image should be scaled to fit the `ImageView` (e.g., `centerCrop`, `fitCenter`).
+- android:adjustViewBounds – If set to true, it will preserve the aspect ratio of the image.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+2. Checkbox
+
+*Explanation:
+The `Checkbox` is a user interface control that allows users to select one or more options from a set of choices. Each checkbox can be checked or unchecked independently of others.
+
+*XML Example:
+
+<CheckBox
+    android:id="@+id/checkBox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Accept Terms and Conditions"
+    android:layout_marginTop="20dp"/>
+
+*Kotlin Code Example:
+To get the checked status of the checkbox and handle user interaction:
+
+
+val checkBox: CheckBox = findViewById(R.id.checkBox)
+val isChecked = checkBox.isChecked  // Get the checked state
+checkBox.setOnCheckedChangeListener { _, isChecked ->
+    // Perform action based on whether the checkbox is checked or unchecked
+    if (isChecked) {
+        Toast.makeText(applicationContext, "Checkbox is checked", Toast.LENGTH_SHORT).show()
+    } else {
+        Toast.makeText(applicationContext, "Checkbox is unchecked", Toast.LENGTH_SHORT).show()
+    }
+}
+
+*Commonly Used Attributes:
+
+- android:id – Unique identifier for the `CheckBox`.
+- android:layout_width – Defines the width of the `CheckBox`. Common values: `wrap_content`.
+- android:layout_height – Defines the height of the `CheckBox`. Common values: `wrap_content`.
+- android:text – The label for the `CheckBox`.
+- android:checked – The initial checked state of the `CheckBox`.
+- android:onCheckedChanged – Used to define an event handler directly in XML (deprecated in favor of `setOnCheckedChangeListener`).
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+3. RadioButton and RadioGroup
+
+*Explanation:
+`RadioButton` allows users to select a single option from a set of choices. Multiple `RadioButton` elements are typically grouped together inside a `RadioGroup`, which ensures that only one `RadioButton` can be selected at a time.
+
+*XML Example (RadioButton within a RadioGroup):
+
+<RadioGroup
+    android:id="@+id/radioGroup"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    
+    <RadioButton
+        android:id="@+id/radioButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Option 1" />
+    
+    <RadioButton
+        android:id="@+id/radioButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Option 2" />
+</RadioGroup>
+
+*Kotlin Code Example:
+In your `Activity.kt` file, you can handle the selection of a `RadioButton`.
+
+val radioGroup: RadioGroup = findViewById(R.id.radioGroup)
+radioGroup.setOnCheckedChangeListener { group, checkedId ->
+    when (checkedId) {
+        R.id.radioButton1 -> Toast.makeText(applicationContext, "Option 1 Selected", Toast.LENGTH_SHORT).show()
+        R.id.radioButton2 -> Toast.makeText(applicationContext, "Option 2 Selected", Toast.LENGTH_SHORT).show()
+    }
+}
+
+*Commonly Used Attributes for RadioButton and RadioGroup:
+
+- android:id – Unique identifier for the `RadioButton` or `RadioGroup`.
+- android:layout_width – Defines the width. Common values: `wrap_content`.
+- android:layout_height – Defines the height. Common values: `wrap_content`.
+- android:text – The label for the `RadioButton`.
+- android:checked – Sets the default checked state of the `RadioButton`.
+- android:onCheckedChanged – Used to define an event handler directly in XML for `RadioButton` (deprecated in favor of `setOnCheckedChangeListener`).
+- android:orientation – Defines whether the `RadioGroup` items are arranged horizontally or vertically (e.g., `horizontal`, `vertical`).
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+4. DatePicker
+
+*Explanation:
+The `DatePicker` allows users to pick a date (day, month, year) from a UI interface. This is commonly used for selecting dates in forms, event planners, or booking apps.
+
+*XML Example:
+
+<DatePicker
+    android:id="@+id/datePicker"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:calendarViewShown="false"
+    android:datePickerMode="spinner"/>
+
+*Kotlin Code Example:**
+You can retrieve the selected date using the following code:
+
+val datePicker: DatePicker = findViewById(R.id.datePicker)
+val day = datePicker.dayOfMonth
+val month = datePicker.month + 1  // Month is 0-indexed
+val year = datePicker.year
+Toast.makeText(applicationContext, "Selected Date: $day/$month/$year", Toast.LENGTH_SHORT).show()
+
+*Commonly Used Attributes:
+
+- android:id – Unique identifier for the `DatePicker`.
+- android:layout_width – Defines the width.
+- android:layout_height – Defines the height.
+- android:calendarViewShown – Whether the calendar view is displayed.
+- android:datePickerMode – The style of the `DatePicker` (e.g., `spinner`, `calendar`).
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+5. Switch
+
+*Explanation:
+A `Switch` is a two-state toggle button that allows the user to switch between two states (on or off). It is commonly used to toggle settings or preferences in apps.
+
+*XML Example:
+
+<Switch
+    android:id="@+id/switch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Enable Feature"
+    android:layout_marginTop="20dp"/>
+
+*Kotlin Code Example:
+To check the state of a `Switch`:
+
+val switch: Switch = findViewById(R.id.switch)
+switch.setOnCheckedChangeListener { _, isChecked ->
+    if (isChecked) {
+        Toast.makeText(applicationContext, "Feature Enabled", Toast.LENGTH_SHORT).show()
+    } else {
+        Toast.makeText(applicationContext, "Feature Disabled", Toast.LENGTH_SHORT).show()
+    }
+}
+
+*Commonly Used Attributes:
+
+- android:id – Unique identifier for the `Switch`.
+- android:layout_width – Defines the width.
+- android:layout_height – Defines the height.
+- android:text – The label text.
+- android:checked – The initial state of the `Switch`.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+6. TextClock
+
+*Explanation:
+The `TextClock` is a widget that displays the current time in a text format. It can be customized to show time in different formats.
+
+*XML Example:
+
+<TextClock
+    android:id="@+id/textClock"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:format12Hour="hh:mm:ss a"
+    android:format24Hour="HH:mm:ss"
+    android:layout_marginTop="20dp"/>
+
+*Kotlin Code Example:
+The `TextClock` will automatically update the time based on the format set in XML, but if needed, you can access and manipulate it in Kotlin.
+
+
+val textClock: TextClock = findViewById(R.id.textClock)
+val currentTime = textClock.text.toString()
+Toast.makeText(applicationContext, "Current Time: $currentTime", Toast.LENGTH_SHORT).show()
+
+*Commonly Used Attributes:
+
+- android:id – Unique identifier for the `TextClock`.
+- android:layout_width – Defines the width.
+- android:layout_height – Defines the height.
+- android:format12Hour – The 12-hour format.
+- android:format24Hour – The 24-hour format.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+7. ScrollView
+
+*Explanation:
+A `ScrollView` is a layout container that allows users to scroll through its content when the content exceeds the screen size. It’s typically used when you have long forms or content that doesn't fit on one screen.
+
+*XML Example:
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <!-- Content goes here, such as form fields, text, etc. -->
+        
+    </LinearLayout>
+</ScrollView>
+
+*Kotlin Code Example:
+Typically, a `ScrollView` is used as a layout container, and you don’t need to interact with it directly in most cases. But here's an example of setting content dynamically:
+
+
+val scrollView: ScrollView = findViewById(R.id.scrollView)
+val contentLayout: LinearLayout = findViewById(R.id.contentLayout)
+contentLayout.addView(View(this))  // Dynamically add content to the scroll view
+
+*Commonly Used Attributes:
+
+- android:id – Unique identifier for the `ScrollView`.
+- android:layout_width – Defines the width.
+- android:layout_height – Defines the height.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+8. Space
+
+*Explanation:
+The `Space` view is a simple layout element used to create an empty space between other views. It is often used for layout alignment purposes.
+
+*XML Example:
+
+<Space
+    android:layout_width="wrap_content"
+    android:layout_height="20dp"/>
+
+*Kotlin Code Example:
+
+val space: Space = findViewById(R.id.space)
+// Typically, the Space element doesn't require any direct interaction in code
+
+*Commonly Used Attributes:
+
+- android:id – Unique identifier for the `Space`.
+- android:layout_width – Defines the width (usually `wrap_content`).
+- android:layout_height – Defines the height of the space.
+
+======================================================================================================================================
+

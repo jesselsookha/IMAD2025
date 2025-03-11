@@ -1,0 +1,475 @@
+======================================================================================================================================
+Layout Containers - Theory + Code
+======================================================================================================================================
+
+1. Constraint Layout
+
+*Explanation:
+
+- Constraint Layout is a more flexible and powerful layout container in Android. It allows you to create (an adaptive) responsive, dynamic layouts     by defining the position and size of UI elements relative to each other and to the parent container.
+
+- Unlike Linear Layout, where child views are stacked vertically or horizontally, Constraint Layout allows for a more free-form layout   by positioning the views using constraints (e.g., top, bottom, start, end).
+  
+*When to Use:
+
+- Constraint Layout is ideal for more complex and flexible UI designs where elements need to have precise control over their     positioning and sizing.
+
+- It’s especially useful when you want to create layouts that work well on different screen sizes, ensuring the UI adapts and remains    responsive.
+
+*Use Case Example:
+
+- A screen with a login form where you want the username field to be aligned to the top, the password field just below it, and a login   button centered at the bottom. Each element has a constraint relative to the others (e.g., the button is centered horizontally, the   username and password fields are aligned vertically).
+  
+*Why Choose Constraint Layout:
+
+- It provides flexibility and efficiency by reducing the need for nesting multiple layouts (such as nesting Relative Layout or Linear   Layout).
+
+- It allows for responsive layouts using guidelines, barriers, and chains, making it ideal for modern apps that need to adapt to multiple screen sizes.
+
+=====================================================================================================================================
+* Code Example *Please note that the code follows the example we have discussed in class, but there are some values missing. 
+* This means that simply copying and pasting the code and then attempting to execute the app might not immediately work until the 
+* right code is included and/or edited  
+=====================================================================================================================================
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- EditText for number 1 -->
+    <EditText
+        android:id="@+id/etNum1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter number 1"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- EditText for number 2 -->
+    <EditText
+        android:id="@+id/etNum2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter number 2"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etNum1"
+        app:layout_constraintTop_margin="16dp" />
+
+    <!-- Add button -->
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        app:layout_constraintTop_toBottomOf="@id/etNum2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_margin="16dp" />
+
+    <!-- Other buttons for Subtract, Multiply, Divide, Power, etc. -->
+    <Button
+        android:id="@+id/btnSubtract"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subtract"
+        app:layout_constraintTop_toBottomOf="@id/btnAdd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_margin="8dp" />
+    
+    <!-- Add other buttons with similar constraints... -->
+
+    <!-- TextView for displaying the result -->
+    <TextView
+        android:id="@+id/tvDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Result"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/btnSubtract"
+        app:layout_constraintTop_margin="20dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+*Notes 
+
+    - ConstraintLayout uses constraints to position views. Each view is constrained to the parent or to other views.
+    - Views are positioned relative to each other (e.g., `@id/etNum1`, `@id/btnAdd`) or the parent.
+    - All the components are positioned using constraints.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+2. Linear Layout (Vertical and Horizontal)
+
+*Explanation:
+
+- Linear Layout is one of the simplest layout containers in Android. It arranges child views (UI elements) in a single direction,   either **vertically or horizontally.
+
+- Vertical Linear Layout places all child elements one below the other, and Horizontal Linear Layout places child elements side by   side.
+
+*When to Use:
+
+- Vertical Linear Layout is typically used when the screen is to be filled with items in a single column, such as a list of items,   form fields, or vertical navigation buttons.
+
+- Horizontal Linear Layout is used when you need to arrange items in a row, like buttons or icons in a toolbar, navigation tabs, or when you want elements aligned in a single row.
+
+*Use Case Example:
+
+- Vertical Layout: A form with a series of text fields (name, email, password) stacked on top of each other.
+
+- Horizontal Layout: A row of buttons or image icons placed next to each other, like in a toolbar or a horizontal menu.
+
+*Why Choose Linear Layout:
+
+- It’s great when you want simple layouts with items neatly placed in a single line. It’s easy to understand and manage.
+
+- For vertical layouts, the components are automatically adjusted to match their parent's width (which might often be match_parent).
+
+- For horizontal layouts, the child views are adjusted according to their specified width and height.
+
+=====================================================================================================================================
+* Code Example *Please note that the code follows the example we have discussed in class, but there are some values missing. 
+* This means that simply copying and pasting the code and then attempting to execute the app might not immediately work until the 
+* right code is included and/or edited  
+=====================================================================================================================================
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- First row of EditText fields -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <EditText
+            android:id="@+id/etNum1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Enter number 1"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/etNum2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Enter number 2"
+            android:inputType="numberDecimal" />
+    </LinearLayout>
+
+    <!-- Row for operation buttons (Add, Subtract, etc.) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add" />
+
+        <Button
+            android:id="@+id/btnSubtract"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Subtract" />
+
+        <Button
+            android:id="@+id/btnMultiply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Multiply" />
+
+        <Button
+            android:id="@+id/btnDivide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Divide" />
+    </LinearLayout>
+
+    <!-- Row for additional buttons (Power, Square Root, Percentage) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnToPowerOf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="x^y" />
+
+        <Button
+            android:id="@+id/btnSquareRoot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="√x" />
+
+        <Button
+            android:id="@+id/btnPercentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="%" />
+    </LinearLayout>
+
+    <!-- TextView for displaying results -->
+    <TextView
+        android:id="@+id/tvDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Result"
+        android:textSize="18sp" />
+</LinearLayout>
+
+*Notes
+
+    - Vertical LinearLayout: Used for the main layout.
+    - Horizontal LinearLayout: Used for arranging the buttons (operation buttons, additional buttons like Power, 
+	Square Root, and Percentage) in a row.
+    - EditText: Two fields for the user to input numbers.
+    - Buttons: Controls for operations (Add, Subtract, etc.).
+    - TextView: For displaying the result.
+--------------------------------------------------------------------------------------------------------------------------------------
+
+3. Relative Layout
+
+*Explanation:
+
+- Relative Layout allows you to position each UI element relative to others or relative to the parent container. For example, you can   position a button below a text view or to the right of another button.
+
+- The key idea in Relative Layout is the relationship between elements (child views) and their spatial alignment to each other and     the parent.
+
+*When to Use:
+
+- Use Relative Layout when you want to create more complex layouts without the overhead of Constraint Layout, or when you need to   arrange elements based on their relative position to each other or the parent.
+
+- This layout is best when you want to create a UI where views are aligned in a flexible and relative manner, but the layout   complexity is not high enough to justify using Constraint Layout.
+
+*Use Case Example:
+
+- A layout with an image on the left and a TextView on the right. You can set the TextView to align to the right of the image, using the `android:layout_toRightOf` attribute.
+  
+*Why Choose Relative Layout:
+
+- It provides good flexibility, but it can get complex and difficult to manage when there are many views.
+
+- Relative Layout is great for smaller, less complex layouts, where you want to avoid deep nesting of views, but don't need the full   flexibility of Constraint Layout.
+
+=====================================================================================================================================
+* Code Example *Please note that the code follows the example we have discussed in class, but there are some values missing. 
+* This means that simply copying and pasting the code and then attempting to execute the app might not immediately work until the 
+* right code is included and/or edited  
+=====================================================================================================================================
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- EditText for number 1 -->
+    <EditText
+        android:id="@+id/etNum1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter number 1"
+        android:inputType="numberDecimal"
+        android:layout_alignParentTop="true" />
+
+    <!-- EditText for number 2 -->
+    <EditText
+        android:id="@+id/etNum2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter number 2"
+        android:inputType="numberDecimal"
+        android:layout_below="@id/etNum1"
+        android:layout_marginTop="16dp" />
+
+    <!-- Add button -->
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        android:layout_below="@id/etNum2"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="16dp" />
+
+    <!-- Other buttons for Subtract, Multiply, etc. -->
+    <Button
+        android:id="@+id/btnSubtract"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subtract"
+        android:layout_toRightOf="@id/btnAdd"
+        android:layout_alignBaseline="@id/btnAdd"
+        android:layout_marginStart="8dp" />
+
+    <!-- TextView for displaying the result -->
+    <TextView
+        android:id="@+id/tvDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Result"
+        android:textSize="18sp"
+        android:layout_below="@id/btnAdd"
+        android:layout_marginTop="20dp" />
+
+</RelativeLayout>
+
+*Notes
+    - Each view in RelativeLayout can be positioned relative to the parent or to other views.
+    - For example, etNum2 is positioned below etNum1, and btnSubtract is placed to the right of btnAdd.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+Summary: Comparison and Considerations
+
+┌────────────────────────┬─────────────┬─────────────────────────────────────────┬────────────────────────────────────────┐
+│ Layout Type            │ Flexibility │ Use Cases                               │ Key Benefit                            │
+├────────────────────────┼─────────────┼─────────────────────────────────────────┼────────────────────────────────────────┤
+│ Linear Layout          │ Low         │ Simple forms, vertical lists,           │ Easy to use and understand             │
+│ Vertical               │             │ stacked buttons                         │                                        │
+├────────────────────────┼─────────────┼─────────────────────────────────────────┼────────────────────────────────────────┤
+│ Linear Layout          │ Low         │ Navigation bars, toolbars,              │ Simple and quick to implement          │
+│ Horizontal             │             │ horizontal button lists                 │                                        │          
+├────────────────────────┼─────────────┼─────────────────────────────────────────┼────────────────────────────────────────┤
+│ Constraint Layout      │ High        │ Complex, responsive, flexible layouts   │ Flexible, responsive, reduces nesting  │
+├────────────────────────┼─────────────┼─────────────────────────────────────────┼────────────────────────────────────────┤
+│ Relative Layout        │ Medium      │ Elements with relative positioning      │ Simple, good for smaller layouts       │
+└────────────────────────┴─────────────┴─────────────────────────────────────────┴────────────────────────────────────────┘
+
+======================================================================================================================================
+Legacy Layouts and other Modern Layouts
+======================================================================================================================================
+
+** Android App development has been around for some time. While Kotlin is the native language for app development these days, Java was originally used. And within Java software development, many of the layouts used there was adapted and used in App development. The information shared below allows you to understand the legacy layouts and their possibility that some may still be implemented in present day layouts, while others are outdated and newer layouts can do the same **
+
+======================================================================================================================================
+
+1. Legacy Layouts in Modern App Development
+
+There are legacy layout types that are still used in modern app development, even though more flexible and efficient layouts like Constraint Layout have become the preferred option for most developers. These legacy layouts were used heavily before Constraint Layout became the default choice for complex designs. Here are the main ones:
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+FrameLayout
+
+FrameLayout is a very simple container that is used to hold a single child view. While you can technically add multiple views, all     views will be stacked on top of each other, and only the last added view will be visible unless you position them in a specific     way (using layout parameters).
+
+- When to Use:
+  - It's typically used when you want to stack views on top of one another, such as in cases where you want to show a ProgressBar     while waiting for something to load over an image or background.
+  
+  - FrameLayout is also used in situations where you want to overlay one view on top of another, like in a ViewPager or     FragmentContainer (for fragment-based UI).
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+TableLayout
+
+TableLayout is a layout where views are arranged in rows and columns, similar to a table in HTML. It is a useful layout when you need to create a form-like structure or any other layout that mimics a table.
+
+- When to Use:
+  - It’s best used for forms, calendars, or grids where you need to organize content in rows and columns (e.g., a login form with     username, password, and buttons aligned in a table-like format).
+
+--------------------------------------------------------------------------------------------------------------------------------------
+  
+GridLayout
+
+GridLayout works by placing views into a grid of rows and columns. It’s similar to TableLayout, but more flexible, as you can     control the positioning and size of each item within the grid.
+
+- When to Use:
+  - It’s useful when you need a structured grid of elements, especially when you want the views to span across multiple rows or     columns (e.g., a calculator UI where buttons span multiple cells).
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+AbsoluteLayout *(Legacy, Deprecated)*
+
+AbsoluteLayout is a layout where each child view is positioned absolutely using specific x and y coordinates (based on the parent container's size). While this was once useful, it's now discouraged due to its inflexibility, especially on different screen sizes.
+
+- When to Use:
+  - This layout was more common in older Android apps, but it is deprecated and not recommended for use in modern development.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+ListView and GridView *(Legacy for specific use cases)*
+
+While not strictly layout containers, ListView and GridView were previously the go-to views for displaying lists and grids of data. These views are now somewhat replaced by RecyclerView, which offers more flexibility and performance improvements.
+
+- When to Use:
+  - They are still acceptable in simpler scenarios, but for more complex or dynamic lists, RecyclerView is preferred.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------
+
+2. Newer Layout Containers to Explore
+
+There are a few newer layout containers and features that you might consider advanced and could explore these in the near future:
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+CoordinatorLayout
+
+CoordinatorLayout is a powerful and flexible layout container used primarily for creating complex layouts involving nested scrolling, like the ones seen in apps with Material Design, where elements such as toolbars or floating action buttons (FABs) react to scrolling.
+
+- When to Use:
+  - Use CoordinatorLayout when you're building layouts that require nested scrollable views with interactions between elements, like a     collapsing toolbar with a FloatingActionButton that hides or shows on scroll.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+NestedScrollView
+
+NestedScrollView is a scrollable container that allows scrolling of its child views. It’s particularly useful when you have multiple scrollable elements within a layout, such as scrollable lists inside other scrollable areas.
+
+- When to Use:
+  - Use this when you need scrollable content that can contain other scrollable elements, such as having a ListView or RecyclerView        inside a ScrollView.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+MotionLayout
+
+MotionLayout is a subclass of ConstraintLayout that provides a way to animate complex layout transitions and animations. It’s ideal for creating rich animations between different UI states.
+
+- When to Use:
+  - It’s a great way to create smooth and interactive animations based on UI changes, such as transitions between activity screens or     elements that respond to gestures.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+FlexboxLayout
+
+FlexboxLayout is a flexible layout that allows elements to adjust their size and alignment in multiple directions. It is similar to CSS Flexbox in web development.
+
+- When to Use:
+  - It’s great for situations where you want a layout that is highly responsive, similar to how elements work in web development using     flexbox (like wrapping, alignment, and distribution).
+  - For instance, you might use FlexboxLayout to create a dynamic grid of items that will automatically adjust to the screen size.
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+Summary of Layout Containers
+
+- Legacy Layouts:  
+  - FrameLayout, TableLayout, GridLayout, and ListView/GridView (some are now replaced by better options like RecyclerView).
+  - AbsoluteLayout is deprecated and should no longer be used.
+
+- Newer Layouts:
+  - CoordinatorLayout (for nested scrolling and Material Design).
+  - MotionLayout (for animations and transitions).
+  - FlexboxLayout (for flexible and responsive layouts).
+

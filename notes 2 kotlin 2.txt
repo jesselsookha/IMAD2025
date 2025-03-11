@@ -1,0 +1,138 @@
+
+While our experiments exists within the Android Studio environment with the development of mobile applications, it is important to realise progrmming language we are using to code the applications. The syntax and the programming logic that goes with it.  
+
+=======================================================================================================================================
+Basic Kotlin Syntax
+=======================================================================================================================================
+
+// conditional expressions
+// The following information could be better understood by going through the chapter about Decision Logic 
+// in the IPRG5111 Module Manual 
+
+// The logic of the if..then statement gives programmers to code a choice of doing something or not based 
+// the result of a conditional expression
+
+fun maxOf(a: Int, b: Int): Int {
+    if (a > b) {
+        return a
+    } else {
+        return b
+    }
+}
+
+fun main() {
+    println("max of 0 and 42 is ${maxOf(0, 42)}")
+}
+
+// and because the above example is presented as a function, this function could be written as an equation/expression
+
+fun maxOf(a: Int, b: Int) = if (a > b) a else b
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+// loops - again - the logic of the loops is properly discussed in the IPRG5111 Module Manual because of the advancements in the 
+// programming language - there are many new and possible variations to what we are learning in class. 
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+// in pseudocode - the for loop - we iterate through each element by control of a counter variable 
+
+for intCounter = 0 to 9 Step 1 
+	code to execute 
+end for 
+
+
+// in Kotlin - we have ... 
+
+// to iterate over a range of numbers 
+for (i in 1..3) {
+    print(i)
+}
+
+for (i in 6 downTo 0 step 2) {
+    print(i)
+}
+
+// if we wanted to iterate through an Array (something we are going to talk about in IPRG) the following iterates through each element // in an array
+for (i in array.indices) {
+    print(array[i])
+}
+
+// however this version - while it iterates through an array - the element is accessed with an index
+for ((index, value) in array.withIndex()) {
+    println("the element at $index is $value")
+}
+
+// other examples 
+val items = listOf("apple", "banana", "kiwifruit")
+for (item in items) {
+    println(item)
+}
+
+// and 
+
+val items = listOf("apple", "banana", "kiwifruit")
+for (index in items.indices) {
+    println("item at $index is ${items[index]}")
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+// the while and do..while loops process their instructions (body) while their conditions remains true 
+// *again - read through IPRG5111 notes to help better understand the programming logic 
+
+// the while..loop
+
+while (x > 0) {
+    x--
+}
+
+// the do..while loop 
+
+do {
+    val y = retrieveData()
+} while (y != null) // y is visible here!
+
+// the basic logic of the loop is that a condition is tested and if true, it will allow you into the loop or continue repeating the // instructions - if the condition results in being false, you are effectively kicked out of the loop 
+
+val items = listOf("apple", "banana", "kiwifruit")
+var index = 0
+while (index < items.size) {
+    println("item at $index is ${items[index]}")
+    index++
+} 
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+// when statement 
+// this is similar to the switch / case statement - again - please review the notes in the IPRG5111 Module Manual 
+
+// based on a value contained in a variable - we can execute different instructions 
+
+fun main() {
+    val x = 2
+    when (x) {
+        1 -> print("x == 1")
+        2 -> print("x == 2")
+        else -> print("x is neither 1 nor 2")
+    }
+    // x == 2
+
+}
+
+// when matches against all branches sequentially until the brach condition is statisfied but unlike IPRG - where we learn that the // variable must be equal to a value stated, the when has its own special features - where we can test different kinds of things // instead of just stating a value 
+
+fun describe(obj: Any): String =
+    when (obj) {
+        1          -> "One"
+        "Hello"    -> "Greeting"
+        is Long    -> "Long"
+        !is String -> "Not a string"
+        else       -> "Unknown"
+    }
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+=======================================================================================================================================
+

@@ -1,0 +1,195 @@
+
+While our experiments exists within the Android Studio environment with the development of mobile applications, it is important to realise progrmming language we are using to code the applications. The syntax and the programming logic that goes with it.  
+
+=======================================================================================================================================
+Basic Kotlin Syntax
+=======================================================================================================================================
+
+The following code is a chance to relate the work being learnt in IPRG5111 
+
+// pseudocode (partial program)
+
+2.   output "Enter any word:  "
+3.   input yourWord 
+
+4.   output "You entered the word: "
+5.   output yourWord
+ 
+---------------------------------------------------------------------------------------------------------------------------------------
+// kotlin equivalent code 
+
+// Prints a message to request input
+println("Enter any word: ")
+
+// Reads and stores the user input. For example: Happiness
+val yourWord = readln()
+
+// Prints a message with the input
+print("You entered the word: ")
+print(yourWord)
+// You entered the word: Happiness
+
+---------------------------------------------------------------------------------------------------------------------------------------
+/* 
+ * Remember that because our code environment is Android Studio - the code above and the code still to be shared below will relate to  * what we need to learn, but it is only a small part of the coding that is  * expected of us in the development of an Android App. 
+*/
+---------------------------------------------------------------------------------------------------------------------------------------
+
+// Functions - blocks of code that are separate from the "main" program. These functions are called 
+// whenever and wherever needed, as long as the ~scope~ of the function is within an expected range. 
+
+// a function with 2 Int (integer) parameters and an Int return type
+// please note that because the function has a return type, wherever it is called, variable must be used to accept the returned value
+ 
+fun sum(a: Int, b: Int): Int {
+    return a + b
+}
+ 
+// when sum is executed
+var answer = sum(2, 3)
+
+---------------------------------------------------------------------------------------------------------------------------------------
+// a function body can be an expression where its return type is inferred - this opens up possibilities
+// when coding a function
+
+fun sum(a: Int, b: Int) = a + b
+
+---------------------------------------------------------------------------------------------------------------------------------------
+// the following function does not have a return type - I would refer to this block as a procedure, taking note that it allows you the // programmer to perform tasks without needing to return back an "answer"
+
+fun printSum(a: Int, b: Int) {
+    println("sum of $a and $b is ${a + b}")
+}
+
+fun printStatement() {
+    println("This is a statement that just needed to be printed out the user")
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------
+// variables are declared using the val or var keywords
+
+// use the val keyword to declare variables that are assigned a value only once. 
+// after initialization they cannot be reassigned
+// think of this as a constant
+
+val x: Int = 5 
+
+// use the var keyword to delcare variables that can be reassigned, even after their initialization. 
+
+var x: Int = 5 
+
+x = x + 1 // reassigns a new value of 6 to the variable
+
+// Kotlin also supports type inference - so if we remove the data type from the declaration and provide 
+// just a value - the data type is determined because of the value being assigned
+
+val x = 5 // Int type is inferred 
+
+val y = 5 // initializes the variable at the moment of declaration - type is not required
+
+***************************************************************************************************************************************
+// the following code is a little different compared to what we have discussed about the understanding of a constant 
+
+val c: Int 
+
+c = 33 // still initialized only once - **after declaration
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+// variables do not only have to be declared inside a function 
+
+val PI = 3.14 
+var x = 0 
+
+fun incrementX(){
+    x = x + 1 
+    println(x)
+    println(PI)
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+// as discussed during class, given the code that we experience inside of MainActivity.kt we have seen that we are learning code // through an Object-Oriented Programming paradigm. 
+
+// this means that code for an Activity is structured inside a "class" - the name of the document is also the name of the class 
+
+class MainActivity {
+
+}
+
+// also because we are using a template - MainActivity : AppCompatActivity - this piece of code with the
+// colon - means that MainActivity is inherting another class, named, AppCompatActivity - this will be taught briefly but will be // better understood in the future
+
+// just to now also share the general content and structure of a class 
+
+class Name {
+    // private fields
+	variables only accessible inside of a class 
+    // public properties
+	when a class is instantiated as an object - the values of "some" variables is accessible through these properties
+    // constructors
+	when a class is instantiated as an object - a constructor is used to initially setup the object
+    // destructors 
+    // public / private methods 
+	functions that perform tasks - accessible by those who instantiate objects and internally as well
+}   
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+// Kotlin does have some slight advancements that makes coding classes interesting
+
+// properties of a class can be listed in its declaration or body 
+
+class Rectangle(val height: Double, val length: Double) {
+    val perimeter = (height + length) * 2
+}
+
+
+// the default constructor with parameters listed in the class declaration is available automatically 
+
+class Rectangle(val height: Double, val length: Double) {
+    val perimeter = (height + length) * 2 
+}
+fun main() {
+    val rectangle = Rectangle(5.0, 2.0)
+    println("The perimeter is ${rectangle.perimeter}")
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+// comments - Kotlin supports single-line and multi-line (block) comments
+
+// This is a comment on one line 
+
+var PI = 3.14 // This is a comment along with a line of code 
+
+/* This is a block comment 
+   on multiple 
+   lines */ 
+
+/* This is also a block 
+   comment on 
+   multiple 
+   lines 
+*/
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+// string templates 
+
+// one of the things we learn in pseudocode is that when we use the output statement and wish to print a statement along with the // answer, we use the + symbol to denote concatenation of a string with variables 
+
+6.  output "The area of the sqaure is " + intArea
+
+// now in Kotlin ( and in an Android App )
+
+    tvDisplay.text = "The area of the square is " + intArea.toString() 
+
+// but in Kotlin ( and again in an Android App )
+
+    tvDisplay.text = "The area of the sqaure is $intArea"
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+=======================================================================================================================================
+
