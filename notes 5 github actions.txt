@@ -1,0 +1,459 @@
+Introduction to GitHub Actions
+-------------------------------
+
+GitHub Actions is a powerful tool that helps automate workflows, such as Continuous Integration (CI) and Continuous Deployment (CD), directly within GitHub. It enables developers to set up automated processes that run when certain events happen in a repository, like when code is pushed, a pull request is made, or when a tag is created.
+
+In the context of Android development with Kotlin, GitHub Actions can be used to:
+
+- Automate builds (both APK and AAB generation)
+- Run tests to ensure code correctness
+- Deploy apps or share artifacts (like APK files) with others
+- Ensure code quality through checks (static analysis, linting, etc.)
+
+Why Use GitHub Actions?
+-----------------------
+
+GitHub Actions can be a great tool for you, 1st-year students learning mobile app development because it automates many of the repetitive and error-prone steps that could otherwise be done manually. Here are some key benefits:
+
+1. Automated Builds and Verification: 
+- GitHub Actions can automatically build and verify if your project compiles successfully. This saves time and reduces human errors. If the project doesn't compile, you will see an error message in GitHub, similar to Android Studio's Gradle build output. This helps you learn to troubleshoot build issues.
+   
+2. Quality Assurance:
+- By automating the testing of the app, GitHub Actions can run unit tests or lint checks, making sure that the app's code adheres to best practices and doesn’t contain errors.
+- You can configure automated tests to ensure their app is working as expected after changes are made.
+   
+3. Consistent Development Environment:
+- GitHub Actions ensures that the same environment is used for every build. This helps avoid issues where something works locally in Android Studio but fails on another machine or in production.
+   
+4. Saves Time:
+- You don’t need to manually compile their app every time. GitHub Actions does the heavy lifting, so that you can focus more on coding and logic development. It also gives quick feedback about whether the code is functional or if it needs further changes.
+   
+5. Build and Distribute APK/AAB Files:
+- GitHub Actions can generate APK (Android Application Package) or AAB (Android App Bundle) files automatically. This means that you can easily share their APK files or deploy them to the Google Play Store, without needing to manually build the app each time.
+- Using automated build systems can also be a great introduction to app distribution, as it mimics real-world practices used in professional development environments.
+
+What is Included in the GitHub Action Script for Android Development?
+---------------------------------------------------------------------
+
+The GitHub Actions workflow script (YAML file) enables you to automate the process of building your Android project and generating APK/AAB files. Here are some important sections and what they do:
+
+1. Workflow Trigger: 
+- This defines when the workflow should run. For example, it can run when a commit is pushed to a specific branch or when a pull request is made.
+   
+2. Building the APK/AAB:
+- The script automates the process of compiling your Android project using Gradle. It builds both Release and Debug APKs, as well as the AAB (Android App Bundle), which is required for Play Store uploads.
+   
+3. Artifact Handling:
+- The script allows uploading the APK/AAB as artifacts. These are files that are saved by GitHub Actions, so you can download the APK/AAB after the build process completes.
+- Artifacts are stored with a naming convention (e.g., `${date_today} - ${repository_name} - ${playstore_name} - APK(s) release generated`), which is useful for keeping track of builds.
+
+4. Error Reporting:
+- If the code fails to compile or there are issues during the build, you can see the exact error in the GitHub Actions logs. This helps you identify and fix issues faster, and also learn how to debug build failures.
+
+How Does GitHub Actions Benefit Students?
+-----------------------------------------
+
+1. Immediate Feedback:
+- As soon as you push their code to the repository, GitHub Actions runs automatically. This gives them immediate feedback on whether their code compiles and whether any issues were detected.
+   
+2. Learning Real-World DevOps Practices:
+- By using GitHub Actions, you learn about CI/CD pipelines, a crucial concept in modern software development. Understanding these workflows is valuable for future job prospects in the industry.
+   
+3. Developing Version Control and Collaboration Skills:
+- You learn how to integrate the code with version control systems (GitHub) and automate tasks. This is useful for collaboration in larger teams and important in professional development environments.
+   
+4. Minimizing Human Error:
+- Automating the build process ensures that students won’t forget steps or make mistakes when generating the APK/AAB. It removes the need for manual intervention, making the process more reliable.
+   
+5. Tracking and Storing Build Artifacts:
+- Storing the APK/AAB files as artifacts in GitHub Actions ensures you have a versioned history of the builds. This is useful for tracking changes over time and downloading specific versions of their app.
+   
+6. Improving Troubleshooting Skills:
+- When a build fails, GitHub Actions provides detailed logs that you can use to figure out what went wrong. This is an excellent way for you to improve your debugging skills in a real-world scenario.
+
+Summary of GitHub Actions for Mobile App Development
+----------------------------------------------------
+
+- What: GitHub Actions is a tool for automating workflows directly in GitHub. In this context, it automates building Android apps (APK/AAB) and running tests.
+
+- Why: It helps students by automating tedious and error-prone tasks like building the app, running tests, and distributing APKs, making the development process faster and more efficient.
+
+- How: Through a YAML script, GitHub Actions builds and tests the project, uploads the APK/AAB, and stores artifacts for download, all while providing feedback on the build process.
+
+======================================================================================================================================
+Content of the build.yml file 
+======================================================================================================================================
+name: Generated APK AAB (Upload - Create Artifact To Github Action)
+
+env:
+  # The name of the main module repository
+  main_project_module: app
+
+  # The name of the Play Store
+  playstore_name: IIECat
+
+on:
+#Where release is writen , must match your branch name , I would suggest cloning your branch  at the end called release so it only builds the final code called release
+  push:
+    branches:
+      - 'release'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Set Current Date As Env Variable
+      - name: Set current date as env variable
+        run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      # Set Repository Name As Env Variable
+      - name: Set repository name as env variable
+        run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu' # See 'Supported distributions' for available options
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      # Run Tests Build
+      - name: Run gradle tests
+        run: ./gradlew test
+
+      # Run Build Project
+      - name: Build gradle project
+        run: ./gradlew build
+
+      # Create APK Debug
+      - name: Build apk debug project (APK) - ${{ env.main_project_module }} module
+        run: ./gradlew assembleDebug
+
+      # Create APK Release
+      - name: Build apk release project (APK) - ${{ env.main_project_module }} module
+        run: ./gradlew assemble
+
+      # Create Bundle AAB Release
+      # Noted for main module build [main_project_module]:bundleRelease
+      - name: Build app bundle release (AAB) - ${{ env.main_project_module }} module
+        run: ./gradlew ${{ env.main_project_module }}:bundleRelease
+
+      # Upload Artifact Build
+      # Noted For Output [main_project_module]/build/outputs/apk/debug/
+      - name: Upload APK Debug - ${{ env.repository_name }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - APK(s) debug generated
+          path: ${{ env.main_project_module }}/build/outputs/apk/debug/
+
+      # Noted For Output [main_project_module]/build/outputs/apk/release/
+      - name: Upload APK Release - ${{ env.repository_name }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - APK(s) release generated
+          path: ${{ env.main_project_module }}/build/outputs/apk/release/
+
+      # Noted For Output [main_project_module]/build/outputs/bundle/release/
+      - name: Upload AAB (App Bundle) Release - ${{ env.repository_name }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - App bundle(s) AAB release generated
+          path: ${{ env.main_project_module }}/build/outputs/bundle/release/
+
+======================================================================================================================================
+Explanation
+======================================================================================================================================
+You're welcome! I’m happy to help you break down and explain the contents of the `build.yml` file. Given that your students are new to programming, I'll provide a step-by-step explanation with the **what**, **why**, and **how** of each section in a simple way.
+
+### **Understanding the build.yml File**
+
+The `build.yml` file is used by GitHub Actions to automate the process of building and testing Android applications in a repository. In this case, it's focused on generating APK and AAB files and then uploading them as artifacts. Let’s go through each section of the YAML file and explain its components.
+
+---
+
+### **1. Metadata and Environment Variables**
+
+```yaml
+name: Generated APK AAB (Upload - Create Artifact To Github Action)
+
+env:
+  # The name of the main module repository
+  main_project_module: app
+
+  # The name of the Play Store
+  playstore_name: IIECat
+```
+
+#### **What**:
+- **name**: This is the name of the workflow. It helps you identify the workflow in GitHub Actions.
+- **env**: This section defines environment variables that can be reused throughout the workflow.
+  - `main_project_module`: Refers to the main module of the project (in this case, it's named "app").
+  - `playstore_name`: The name of the Play Store (it can be a placeholder name, such as `IIECat`, which is the app’s name for distribution purposes).
+
+#### **Why**:
+- Defining these variables makes the script easier to maintain. For example, if you need to change the app name or the module name later, you only need to change it in one place.
+
+#### **How**:
+- These environment variables are referenced later in the script using `${{ env.<variable_name> }}`.
+
+---
+
+### **2. Triggering the Workflow**
+
+```yaml
+on:
+  push:
+    branches:
+      - 'release'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+```
+
+#### **What**:
+- **on**: Specifies the event that will trigger the workflow.
+  - **push**: This means that the workflow will run when a change (commit) is pushed to the `release` branch.
+  - **workflow_dispatch**: This allows the workflow to be manually triggered from the GitHub Actions tab. Students can also run it whenever they want, not just when they push to the `release` branch.
+
+#### **Why**:
+- You only want to run the build and tests when important changes are pushed to the `release` branch. This keeps the builds focused on finalized code.
+- The `workflow_dispatch` option allows for flexibility, so students can manually trigger the build at any time.
+
+#### **How**:
+- When a push to the `release` branch happens, or if the student manually triggers the workflow, the actions defined in the workflow will run.
+
+---
+
+### **3. Defining the Build Job**
+
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+```
+
+#### **What**:
+- **jobs**: The section that defines what tasks will be executed.
+  - **build**: This is the name of the job that will run.
+  - **runs-on: ubuntu-latest**: Specifies the environment where the job will run. In this case, it uses the latest version of Ubuntu (Linux) provided by GitHub.
+
+#### **Why**:
+- GitHub Actions uses virtual machines to run the workflows, and Ubuntu is a commonly used OS for running Android builds. This ensures that the workflow runs on a clean, consistent environment each time.
+
+#### **How**:
+- The `build` job will execute the steps defined below in a fresh Ubuntu machine, ensuring no environment-related inconsistencies.
+
+---
+
+### **4. Steps in the Build Job**
+
+The `steps` section defines the tasks that will be performed as part of the `build` job.
+
+---
+
+#### **Step 1: Checkout the Code**
+
+```yaml
+- uses: actions/checkout@v3
+```
+
+#### **What**:
+- This action checks out (downloads) the code from the GitHub repository to the runner.
+
+#### **Why**:
+- This is needed so that the subsequent steps can access and build the code.
+
+#### **How**:
+- It pulls the latest code from the repository and makes it available for the next steps.
+
+---
+
+#### **Step 2: Set Current Date as Env Variable**
+
+```yaml
+- name: Set current date as env variable
+  run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+```
+
+#### **What**:
+- This step sets an environment variable `date_today` with the current date in the format `YYYY-MM-DD`.
+
+#### **Why**:
+- The date is used to uniquely name the generated APK/AAB files, ensuring they have a timestamp and aren't overwritten.
+
+#### **How**:
+- It runs a shell command that fetches the current date and stores it in the `date_today` variable.
+
+---
+
+#### **Step 3: Set Repository Name as Env Variable**
+
+```yaml
+- name: Set repository name as env variable
+  run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
+```
+
+#### **What**:
+- This step extracts the name of the repository and saves it in an environment variable called `repository_name`.
+
+#### **Why**:
+- The repository name can be useful for naming the artifacts generated, ensuring they are unique to the project.
+
+#### **How**:
+- It uses the `github.repository` variable (which provides the repository in the format `owner/repository`) and extracts the actual repository name using `awk`.
+
+---
+
+#### **Step 4: Set Up JDK (Java Development Kit)**
+
+```yaml
+- name: Set Up JDK
+  uses: actions/setup-java@v3
+  with:
+    distribution: 'zulu'
+    java-version: '17'
+    cache: 'gradle'
+```
+
+#### **What**:
+- This step sets up the Java Development Kit (JDK) on the GitHub Actions runner. Android development requires Java, so this ensures it's available.
+- It uses version 17 of the JDK and sets up Gradle caching to speed up subsequent builds.
+
+#### **Why**:
+- The Android build process requires Java, and this step ensures the proper version is installed. Caching Gradle dependencies improves build times for subsequent runs.
+
+#### **How**:
+- This action installs the JDK and configures the environment for Gradle to use Java 17.
+
+---
+
+#### **Step 5: Change Wrapper Permissions**
+
+```yaml
+- name: Change wrapper permissions
+  run: chmod +x ./gradlew
+```
+
+#### **What**:
+- This step ensures that the `gradlew` (Gradle Wrapper) file has executable permissions.
+
+#### **Why**:
+- If the `gradlew` file is not marked as executable, the build will fail when trying to run it.
+
+#### **How**:
+- It uses the `chmod` command to make the `gradlew` file executable.
+
+---
+
+#### **Step 6: Run Gradle Tests**
+
+```yaml
+- name: Run gradle tests
+  run: ./gradlew test
+```
+
+#### **What**:
+- This runs any unit tests defined in the Android project using Gradle.
+
+#### **Why**:
+- It ensures that any changes made to the code don't break the app by running the tests before building the app.
+
+#### **How**:
+- It calls the Gradle wrapper to run the tests (`gradlew test`).
+
+---
+
+#### **Step 7: Build the Project**
+
+```yaml
+- name: Build gradle project
+  run: ./gradlew build
+```
+
+#### **What**:
+- This builds the Android project, ensuring everything is correctly compiled.
+
+#### **Why**:
+- It ensures the app is compiled and ready for generating the APK or AAB.
+
+#### **How**:
+- It runs the Gradle build command to compile the app.
+
+---
+
+#### **Step 8: Build APK (Debug and Release)**
+
+```yaml
+- name: Build apk debug project (APK) - ${{ env.main_project_module }} module
+  run: ./gradlew assembleDebug
+```
+
+```yaml
+- name: Build apk release project (APK) - ${{ env.main_project_module }} module
+  run: ./gradlew assemble
+```
+
+#### **What**:
+- These steps build both debug and release versions of the APK.
+
+#### **Why**:
+- Debug APK is for testing, while release APK is for final distribution.
+
+#### **How**:
+- The first command builds the debug APK, and the second builds the release APK.
+
+---
+
+#### **Step 9: Build AAB (App Bundle)**
+
+```yaml
+- name: Build app bundle release (AAB) - ${{ env.main_project_module }} module
+  run: ./gradlew ${{ env.main_project_module }}:bundleRelease
+```
+
+#### **What**:
+- This step builds an AAB (Android App Bundle) for release, which is required for Play Store uploads.
+
+#### **Why**:
+- AAB is the preferred format for Play Store distribution, offering optimizations for different device configurations.
+
+#### **How**:
+- It runs the Gradle command to generate the AAB file.
+
+---
+
+#### **Step 10: Upload Artifacts**
+
+```yaml
+- name: Upload APK Debug - ${{ env.repository_name }}
+  uses: actions/upload-artifact@v3
+  with:
+    name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - APK(s) debug generated
+    path: ${{ env.main_project_module }}/build/outputs/apk/debug/
+```
+
+#### **What**:
+- These steps upload the generated APK (debug, release) and AAB files as artifacts to GitHub Actions.
+
+#### **Why**:
+- By uploading the files, students can download them later or share them with others.
+
+#### **How**:
+- The `actions/upload-artifact` action uploads the files to GitHub, where they are stored with unique names.
+
+---
+
+### **Summary**
+
+This `build.yml` file automates the process of compiling, testing, and uploading APK/AAB files for an Android project. The workflow ensures that every change made to the codebase is tested, built, and packaged consistently. Understanding each step and why it’s included will help students see the full process of building and deploying Android apps, and how GitHub Actions can make their development process more efficient.
+
